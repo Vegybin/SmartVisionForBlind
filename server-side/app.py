@@ -6,8 +6,6 @@ import random
 import os
 import image_stuff
 from gtts import gTTS
-from pydub import AudioSegment
-from pydub.effects import speedup
 
 app = Flask(__name__)
 CORS(app)
@@ -31,11 +29,6 @@ def process_image():
     rand_int = str(random.randint(0,999999))
     tts.save("output"+rand_int+".mp3")
     
-    audio = AudioSegment.from_file("output"+rand_int+".mp3", format="mp3")
-        
-    speedup(audio, playback_speed=2)
-    audio.export("output"+rand_int+".mp3", format="mp3")
-
     # Read the saved file and stream it
     with open("output"+rand_int+".mp3", "rb") as f:
         audio_data = f.read()
