@@ -1,14 +1,14 @@
 from flask import Flask, request, Response
 import pyttsx3
 import cv2
-from flask_cors import CORS
+# from flask_cors import CORS
 import numpy as np
 import random
 import os
 import image_stuff
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 current_caption = ""
 
