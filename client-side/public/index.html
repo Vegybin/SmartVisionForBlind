@@ -3,38 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Color Analyzer</title>
+    <title>Image Captioning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input, button {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Upload an Image</h2>
+    <h1>Upload an Image for Captioning</h1>
     <input type="file" id="imageInput" accept="image/*">
     <button onclick="uploadImage()">Upload</button>
-
-    <h2>Listen to Colors</h2>
-    <button onclick="playAudio()">Play Audio</button>
-
+    <br>
+    <img id="preview" src="" alt="Image Preview" style="max-width: 300px; display: none; margin-top: 10px;">
+    <br>
+    <audio id="audio" controls style="display: none; margin-top: 10px;"></audio>
+    
     <script>
         function uploadImage() {
-            let fileInput = document.getElementById('imageInput');
-            if (fileInput.files.length === 0) {
-                alert("Please select an image first.");
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select an image first.');
                 return;
             }
-            let formData = new FormData();
-            formData.append("image", fileInput.files[0]);
-
-            fetch("http://34.93.32.105:5000/process-image", {
-                method: "POST",
+            
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            // Show image preview
+            const preview = document.getElementById('preview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            
+            fetch('http://localhost:5000/caption-image', {
+                method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {})
-            .catch(error => console.error("Error:", error));
-        }
-
-        function playAudio() {
-            let audio = new Audio("http://34.93.32.105:5000/objects-now");
-            audio.play();
+            .then(response => response.blob())
+            .then(blob => {
+                const audioUrl = URL.createObjectURL(blob);
+                const audioElement = document.getElementById('audio');
+                audioElement.src = audioUrl;
+                audioElement.style.display = 'block';
+                audioElement.play();
+            })
+            .catch(error => console.error('Error:', error));
         }
     </script>
 </body>

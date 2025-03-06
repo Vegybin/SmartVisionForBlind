@@ -10,12 +10,10 @@ import image_stuff
 app = Flask(__name__)
 CORS(app)
 
-current_caption = ""
 
 
-@app.route('/process-image', methods=['POST'])
+@app.route('/caption-image', methods=['POST'])
 def process_image():
-    global current_caption
 
     # Get the image file from the request
     file = request.files.get('image')
@@ -27,13 +25,6 @@ def process_image():
 
     # Process the image using YOLO
     current_caption = image_stuff.get_caption(image)
-
-    return {"message": "true"}
-
-
-@app.route('/objects-now', methods=['GET'])
-def objects_now():
-    global current_caption
     engine = pyttsx3.init()
     rand_int = str(random.randint(0,999999))
     engine.save_to_file(current_caption, "output"+rand_int+".mp3")
