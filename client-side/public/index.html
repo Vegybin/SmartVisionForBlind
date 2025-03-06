@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,14 @@
             text-align: center;
             margin: 20px;
         }
-        input, button {
+
+        input,
+        button {
             margin: 10px;
         }
     </style>
 </head>
+
 <body>
     <h1>Upload an Image for Captioning</h1>
     <input type="file" id="imageInput" accept="image/*">
@@ -23,7 +27,7 @@
     <img id="preview" src="" alt="Image Preview" style="max-width: 300px; display: none; margin-top: 10px;">
     <br>
     <audio id="audio" controls style="display: none; margin-top: 10px;"></audio>
-    
+
     <script>
         function uploadImage() {
             const fileInput = document.getElementById('imageInput');
@@ -32,28 +36,29 @@
                 alert('Please select an image first.');
                 return;
             }
-            
+
             const formData = new FormData();
             formData.append('image', file);
-            
+
             // Show image preview
             const preview = document.getElementById('preview');
             preview.src = URL.createObjectURL(file);
             preview.style.display = 'block';
-            
-            fetch('http://34.93.32.105:5000/caption-image', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.blob())
-            .then(blob => {
-                const audioUrl = URL.createObjectURL(blob);
-                const audioElement = document.getElementById('audio');
-                audioElement.src = audioUrl;
-                audioElement.style.display = 'block';
-                audioElement.play();
-            })
-            .catch(error => console.error('Error:', error));
+            fetch("http://localhost:3000/server-ip").then(response => response.text()).then(ip => {
+                fetch('http://34.93.32.105:5000/caption-image', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const audioUrl = URL.createObjectURL(blob);
+                        const audioElement = document.getElementById('audio');
+                        audioElement.src = audioUrl;
+                        audioElement.style.display = 'block';
+                        audioElement.play();
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
         }
     </script>
 </body>
