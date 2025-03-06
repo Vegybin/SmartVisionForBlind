@@ -8,8 +8,8 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map={"": "cuda"}
 )
 
-def get_all_objects(path):
+def get_caption(path):
     image = Image.open("rabbit.png")
-    print(model.query(image, "List all the objects in the image?")["answer"])
+    return model.caption(image, length="short")["caption"]
 
-get_all_objects("rabbit.png")
+print(get_caption("rabbit.png"))
