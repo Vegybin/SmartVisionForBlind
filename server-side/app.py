@@ -32,7 +32,7 @@ def process_image():
     
     audio = AudioSegment.from_file("output"+rand_int+".mp3", format="mp3")
         
-    audio.speedup(playback_speed=1.7)
+    audio.speedup(playback_speed=2)
     audio.export("output"+rand_int+".mp3", format="mp3")
 
     # Read the saved file and stream it
