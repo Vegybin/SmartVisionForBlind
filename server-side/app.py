@@ -1,11 +1,11 @@
 from flask import Flask, request, Response
-import pyttsx3
 import io
 from PIL import Image
 from flask_cors import CORS
 import random
 import os
 import image_stuff
+from gtts import gTTS
 
 app = Flask(__name__)
 CORS(app)
@@ -25,12 +25,9 @@ def process_image():
 
     # Process the image using YOLO
     current_caption = image_stuff.get_caption(image)
-    engine = pyttsx3.init("espeak")
-    engine.setProperty('rate', 150)    # Speed: 150 words per minute
-    engine.setProperty('volume', 1.0)  
+    tts = gTTS(text=current_caption, lang='en')
     rand_int = str(random.randint(0,999999))
-    engine.save_to_file(current_caption, "output"+rand_int+".mp3")
-    engine.runAndWait()
+    tts.save("output"+rand_int+".mp3")
 
     # Read the saved file and stream it
     with open("output"+rand_int+".mp3", "rb") as f:
