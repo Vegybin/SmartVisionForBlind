@@ -35,7 +35,7 @@ def process_image():
 def objects_now():
     global current_caption
     engine = pyttsx3.init()
-    rand_int = random.randint(0,999999)
+    rand_int = str(random.randint(0,999999))
     engine.save_to_file(current_caption, "output"+rand_int+".mp3")
     engine.runAndWait()
 
