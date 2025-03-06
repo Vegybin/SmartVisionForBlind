@@ -25,7 +25,9 @@ def process_image():
 
     # Process the image using YOLO
     current_caption = image_stuff.get_caption(image)
-    engine = pyttsx3.init()
+    engine = pyttsx3.init("espeak")
+    engine.setProperty('rate', 150)    # Speed: 150 words per minute
+    engine.setProperty('volume', 1.0)  
     rand_int = str(random.randint(0,999999))
     engine.save_to_file(current_caption, "output"+rand_int+".mp3")
     engine.runAndWait()
