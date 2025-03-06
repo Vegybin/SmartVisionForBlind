@@ -9,7 +9,7 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 def get_caption(path):
-    image = Image.open("rabbit.png")
+    image = Image.open(path)
     return model.caption(image, length="short")["caption"]
 
 print(get_caption("rabbit.png"))
