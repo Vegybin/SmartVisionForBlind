@@ -6,8 +6,7 @@ model = AutoModelForCausalLM.from_pretrained(
     "vikhyatk/moondream2",
     revision="2025-01-09",
     trust_remote_code=True,
-    # Uncomment for GPU acceleration & pip install accelerate
-    # device_map={"": "cuda"}
+    device_map={"": "cuda"}
 )
  
 # Load your image
