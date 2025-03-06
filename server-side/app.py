@@ -1,14 +1,14 @@
 from flask import Flask, request, Response
 import pyttsx3
-import cv2
-# from flask_cors import CORS
-import numpy as np
+import io
+from PIL import Image
+from flask_cors import CORS
 import random
 import os
 import image_stuff
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 current_caption = ""
 
@@ -22,9 +22,8 @@ def process_image():
     if not file:
         return {"error": "No image provided"}, 400
 
-    # Convert the uploaded image to a NumPy array and decode it using OpenCV
-    file_bytes = np.frombuffer(file.read(), np.uint8)
-    image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)  # OpenCV loads images in BGR format
+    # Convert the uploaded image to a PIL Image
+    image = Image.open(io.BytesIO(file.read())).convert("RGB")  # Convert to RGB format
 
     # Process the image using YOLO
     current_caption = image_stuff.get_caption(image)

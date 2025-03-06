@@ -8,6 +8,5 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map={"": "cuda"}
 )
 
-def get_caption(path):
-    image = Image.open(path)
+def get_caption(image):
     return model.caption(image, length="short")["caption"]
