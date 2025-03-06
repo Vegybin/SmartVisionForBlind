@@ -3,18 +3,19 @@ import pyttsx3
 import cv2
 from flask_cors import CORS
 import numpy as np
+import random
+import os
 import image_stuff
 
 app = Flask(__name__)
 CORS(app)
 
-# Variable to store top two colors
-current_objects = []
+current_caption = ""
 
 
 @app.route('/process-image', methods=['POST'])
 def process_image():
-    global current_objects
+    global current_caption
 
     # Get the image file from the request
     file = request.files.get('image')
@@ -26,29 +27,26 @@ def process_image():
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)  # OpenCV loads images in BGR format
 
     # Process the image using YOLO
-    current_objects = image_stuff.read(image)
+    current_caption = image_stuff.get_caption(image)
 
     return {"message": "true"}
 
 
 @app.route('/objects-now', methods=['GET'])
 def objects_now():
-    global current_objects
-    if current_objects:
-        text = "Detected objects: " + ", ".join(current_objects)
-    else:
-        text = "No objects detected."
-
+    global current_caption
     engine = pyttsx3.init()
-    engine.save_to_file(text, "output.mp3")
+    rand_int = random.randint(0,999999)
+    engine.save_to_file(current_caption, "output"+rand_int+".mp3")
     engine.runAndWait()
 
     # Read the saved file and stream it
-    with open("output.mp3", "rb") as f:
+    with open("output"+rand_int+".mp3", "rb") as f:
         audio_data = f.read()
+    os.remove("output"+rand_int+".mp3")
 
     return Response(audio_data, mimetype="audio/mpeg")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
