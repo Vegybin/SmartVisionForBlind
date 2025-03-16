@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
+global picam2
 load_dotenv()
 picam2 = Picamera2()
 config = picam2.create_preview_configuration(main={"size": (1138,640)})
