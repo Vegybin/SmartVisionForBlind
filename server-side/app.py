@@ -67,7 +67,7 @@ def identify_face():
     stored_faces = cursor.fetchall()
     
     identified_faces = []
-    threshold = 0.80  # 80% similarity threshold
+    threshold = 0.6  # 60% similarity threshold
     
     for unknown_encoding in unknown_encodings:
         for name, embedding in stored_faces:
