@@ -45,7 +45,7 @@
             preview.src = URL.createObjectURL(file);
             preview.style.display = 'block';
             fetch("http://localhost:3000/server-ip").then(response => response.text()).then(ip => {
-                fetch('http://34.93.32.105:5000/caption-image', {
+                fetch('http://'+ip+':5000/caption-image', {
                     method: 'POST',
                     body: formData
                 })
